@@ -1,9 +1,4 @@
-package br.com.alura.threads;
-
-import br.com.alura.banheiro.Banheiro;
-import br.com.alura.banheiro.TarefaLimpeza;
-import br.com.alura.banheiro.TarefaNumero1;
-import br.com.alura.banheiro.TarefaNumero2;
+package br.com.alura.banheiro;
 
 public class TestaBanheiro {
 	
@@ -16,6 +11,7 @@ public class TestaBanheiro {
 //		Thread convidado3 = new Thread(new TarefaNumero1(banheiro), "Pedro");
 //		Thread convidado4 = new Thread(new TarefaNumero2(banheiro), "Bruna");
 		Thread limpeza    = new Thread(new TarefaLimpeza(banheiro), "Tia da limpeza");
+		limpeza.setDaemon(true);
 		
 		convidado1.start();
 		convidado2.start();

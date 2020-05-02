@@ -9,19 +9,15 @@ public class Banheiro {
 		String nome = Thread.currentThread().getName();
 	
 		synchronized (this) {
-			if(this.estaSujo) {
-				System.out.println(nome + " entrando no banheiro");
+			System.out.println(nome + " batendo na porta");
+			
+			while(estaSujo) {
 				esperaLaFora(nome);
 			}
-			
-			System.out.println(nome + " entrando no banheiro");
 			System.out.println(nome + " fazendo coisa rapida");
 			
-			try {
-				Thread.sleep(8000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			dormeThread(5000);
+			estaSujo = true;
 			
 			System.out.println(nome + " dando descarga");
 			System.out.println(nome + " lavando a mão");
@@ -35,19 +31,16 @@ public class Banheiro {
 		String nome = Thread.currentThread().getName();
 
 		synchronized (this) {
-			if(this.estaSujo) {
-				System.out.println(nome + " entrando no banheiro");
+			System.out.println(nome + " batendo na porta");
+			
+			while(estaSujo) {
 				esperaLaFora(nome);
 			}
 			
-			System.out.println(nome + " entrando no banheiro");
 			System.out.println(nome + " fazendo coisa demorada");
 			
-			try {
-				Thread.sleep(15000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			dormeThread(15000);
+			estaSujo = true;
 			
 			System.out.println(nome + " dando descarga");
 			System.out.println(nome + " lavando a mão");
@@ -55,15 +48,6 @@ public class Banheiro {
 		}
 	}
 	
-	private void esperaLaFora(String nome) {
-		System.out.println(nome + " eca, está sujo");
-		try {
-			this.wait();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
-
 	public void limpa() {
 		
 		String nome = Thread.currentThread().getName();
@@ -71,7 +55,7 @@ public class Banheiro {
 		System.out.println(nome + " batendo na porta");
 		
 		synchronized (this) {
-			System.out.println(nome + " entrando no banehiro ");
+			System.out.println(nome + " entrando no banheiro ");
 			
 			if(!estaSujo) {
 				System.out.println(nome + ", não está sujo, vou sair.");
@@ -81,15 +65,28 @@ public class Banheiro {
 			System.out.println(nome + " limpando o banheiro");
 			estaSujo = false;
 			
-			try {
-				Thread.sleep(13000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			dormeThread(13000);
 			
 			this.notifyAll();
 			
 			System.out.println(nome + " saindo do banheiro");
+		}
+	}
+	
+	private void dormeThread(long tempoMili) {
+		try {
+			Thread.sleep(tempoMili);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void esperaLaFora(String nome) {
+		System.out.println(nome + " eca, está sujo");
+		try {
+			this.wait();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 	
